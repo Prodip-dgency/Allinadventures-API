@@ -9,23 +9,33 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Environment Variable # cat env # export ""
+secret_key = os.environ.get('SECRET_KEY')
+allowed_host = os.environ.get('ALLOWED_HOSTS')
+db_name = os.environ.get('DATABASE_NAME')
+db_user = os.environ.get('DATABASE_USER')
+db_pass = os.environ.get('DATABASE_PASSWORD')
+db_host = os.environ.get('DATABASE_HOST')
+db_port = os.environ.get('DATABASE_PORT')
+third_party_package1 = os.environ.get('THIRD_PARTY_PACKAGE1')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$e72$6=1r5h51)=!=wqhs@w_7@u#zhxc(()%ma-i(j1q&cf8&y'
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [allowed_host, '127.0.0.1']
 
 
 # Application definition
@@ -75,8 +85,12 @@ WSGI_APPLICATION = 'AllinadventuresAPI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD': db_pass,
+        'HOST': db_host,
+        'PORT': db_port
     }
 }
 
