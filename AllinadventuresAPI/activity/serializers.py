@@ -19,6 +19,7 @@ class GalleryModelSerializer(ModelSerializer):
     class Meta:
         model = Gallery
         fields = "__all__"
+        
 
 class CategoryModelSerializer(ModelSerializer):
     class Meta:
@@ -29,8 +30,10 @@ class ActivityModelSerializer(ModelSerializer):
     class Meta:
         model = Activity
         fields = "__all__"
+        depth = 2
 
 class ContentModelSerializer(ModelSerializer):
     class Meta:
         model = Content
         fields = "__all__"
+        depth = 2
