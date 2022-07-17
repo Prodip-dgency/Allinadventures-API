@@ -20,7 +20,6 @@ class GalleryModelSerializer(ModelSerializer):
         model = Gallery
         fields = "__all__"
         
-
 class CategoryModelSerializer(ModelSerializer):
     class Meta:
         model = Category
