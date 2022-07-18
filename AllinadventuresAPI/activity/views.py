@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .models import Location, Category, Gallery, Activity, Content
 from .serializers import LocationModelSerializer, CategoryModelSerializer, GalleryModelSerializer, ActivityModelSerializer, ContentModelSerializer
@@ -27,3 +29,10 @@ class ContentModelView(viewsets.ModelViewSet):
     serializer_class = ContentModelSerializer
     queryset = Content.objects.all()
 
+class ListLocations(APIView):
+
+    def get(self, request, format=None):
+        location_list = []
+        for location in Location.objects.all():
+            location_list = location.title
+        return Response(location_list)

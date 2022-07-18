@@ -1,6 +1,6 @@
-from dataclasses import fields
-from pyexpat import model
 from rest_framework.serializers import ModelSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .models import (Location, Category, Gallery, Activity, Content)
 
@@ -36,3 +36,6 @@ class ContentModelSerializer(ModelSerializer):
         model = Content
         fields = "__all__"
         depth = 2
+
+
+

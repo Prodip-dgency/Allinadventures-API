@@ -14,4 +14,5 @@ router.register('content', views.ContentModelView, basename='content')
 
 urlpatterns = [
     path('viewset/', include(router.urls)),
+    path('homeview/', views.ListLocations.as_view(), name='homeview')
 ]
