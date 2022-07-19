@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer
 
 from .models import Location, Category, Gallery, Activity, Content
 from .serializers import LocationModelSerializer, CategoryModelSerializer, GalleryModelSerializer, ActivityModelSerializer, ContentModelSerializer
@@ -29,6 +32,7 @@ class ContentModelView(viewsets.ModelViewSet):
     serializer_class = ContentModelSerializer
     queryset = Content.objects.all()
 
+#testing out APIView class
 class ListLocations(APIView):
 
     def get(self, request, format=None):
@@ -36,3 +40,31 @@ class ListLocations(APIView):
         for location in Location.objects.all():
             location_list = location.title
         return Response(location_list)
+
+
+#testing out function based view
+@api_view()
+def homepageview(request):
+
+    #location
+    location = Location.objects.all()
+
+    #game
+    game = Activity.objects.all()
+
+    #in person game
+    inperson_category = get_object_or_404(Category, title='Escape Room') # Needs unique title or create slug
+    in_person_games = Activity.objects.all().filter(category = inperson_category)
+    in_person_games = ActivityModelSerializer(in_person_games, many=True)
+    in_person_games = in_person_games.data
+    #above code block needs some safety
+
+    #virtual escape room -----> Coming Soon
+
+    all_response = {
+        'location_count': len(location),
+        'game_count': len(game),
+        'in_person_games': in_person_games
+    }
+
+    return Response(all_response)
