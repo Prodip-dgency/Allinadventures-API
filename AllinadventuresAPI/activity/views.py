@@ -10,7 +10,8 @@ from rest_framework.renderers import JSONRenderer
 from .models import Location, Category, Gallery, Activity, Content
 from .serializers import LocationModelSerializer, CategoryModelSerializer, GalleryModelSerializer, ActivityModelSerializer, ContentModelSerializer
 
-# Create your views here.
+
+# Class Based views for all the data tables - Standard
 
 class LocationModelView(viewsets.ModelViewSet):
     serializer_class = LocationModelSerializer
@@ -32,17 +33,9 @@ class ContentModelView(viewsets.ModelViewSet):
     serializer_class = ContentModelSerializer
     queryset = Content.objects.all()
 
-#testing out APIView class
-class ListLocations(APIView):
 
-    def get(self, request, format=None):
-        location_list = []
-        for location in Location.objects.all():
-            location_list = location.title
-        return Response(location_list)
+#function based api for every pages differntly - Not Stadard
 
-
-#testing out function based view
 @api_view()
 def homepageview(request):
 
