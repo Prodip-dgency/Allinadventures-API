@@ -10,10 +10,7 @@ router.register('gallery', views.GalleryModelView, basename='gallery')
 router.register('activity', views.ActivityModelView, basename='activity')
 router.register('content', views.ContentModelView, basename='content')
 
-
-
 urlpatterns = [
     path('viewset/', include(router.urls)),
-    path('homeview/', views.ListLocations.as_view(), name='homeview'),
     path('homepageview/', views.homepageview, name='homepageview')
 ]
