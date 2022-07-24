@@ -39,7 +39,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [allowed_host, '127.0.0.1', 'localhost:3000']
+ALLOWED_HOSTS = [allowed_host, '127.0.0.1']
 
 
 # Application definition
@@ -54,12 +54,14 @@ INSTALLED_APPS = [
 
     # third party packages
     'rest_framework',
+    'corsheaders',
 
     # my apps
     'activity',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -68,6 +70,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:8000',
+  'http://localhost:3000',
+)
 
 ROOT_URLCONF = 'AllinadventuresAPI.urls'
 
