@@ -52,12 +52,19 @@ def homepageview(request):
     in_person_games = in_person_games.data
     #above code block needs some safety
 
+    #other physical games
+    otherphysicalgames_category = get_object_or_404(Category, title='Other Physical Game')
+    other_physical_games = Activity.objects.all().filter(category=otherphysicalgames_category)
+    other_physical_games = ActivityModelSerializer(other_physical_games, many=True)
+    other_physical_games = other_physical_games.data
+
     #virtual escape room -----> Coming Soon
 
     all_response = {
         'location_count': len(location),
         'game_count': len(game),
-        'in_person_games': in_person_games
+        'in_person_games': in_person_games,
+        'other_physical_games': other_physical_games
     }
 
     return Response(all_response)
