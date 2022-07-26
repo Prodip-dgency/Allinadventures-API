@@ -25,4 +25,4 @@ urlpatterns = [
     path('activity/', include('activity.urls')),
     path('admin/', admin.site.urls),
     path('activityadmin/', activity_site.urls)
-] + static(settings.MEDIA_DIR, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
