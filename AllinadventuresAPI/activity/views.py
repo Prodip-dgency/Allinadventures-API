@@ -41,9 +41,19 @@ def homepageview(request):
 
     #location
     location = Location.objects.all()
+    totalLocations = len(location)
 
     #game
     game = Activity.objects.all()
+    totalUniqueGames = len(game)
+
+    #homeagedata
+    homeagedata = {
+        'totalLocations': totalLocations,
+        'totalUniqueGames': totalUniqueGames,
+        'totalFiveStarReview': '98k+',
+        'totalPlayerEscaped': '90k+'
+    }
 
     #in person game
     inperson_category = get_object_or_404(Category, title='Escape Room') # Needs unique title or create slug
@@ -60,11 +70,21 @@ def homepageview(request):
 
     #virtual escape room -----> Coming Soon
 
+    events = 0
+
+    virtualgames = 0
+
+    allreviews = 0
+
+
+
     all_response = {
-        'location_count': len(location),
-        'game_count': len(game),
+        'homeagedata': homeagedata,
         'in_person_games': in_person_games,
-        'other_physical_games': other_physical_games
+        'otherphysicalgames': other_physical_games,
+        'events': events,
+        'virtualgames': virtualgames,
+        'allreviews': allreviews
     }
 
     return Response(all_response)
