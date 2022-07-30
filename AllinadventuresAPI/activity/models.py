@@ -107,6 +107,9 @@ class Event(models.Model):
     duration = models.CharField(max_length=10, null=True, blank=True)
     minimum_participant = models.IntegerField(null=True, blank=True)
     maximum_participant = models.IntegerField(null=True, blank=True)
+    card_image = models.ForeignKey(Gallery, on_delete=models.SET_NULL, related_name='event_card_image', null=True, blank=True)
+    cover_image = models.ForeignKey(Gallery, on_delete=models.SET_NULL, related_name='event_cover_image', null=True, blank=True)
+    cover_image_mobile = models.ForeignKey(Gallery, on_delete=models.SET_NULL, related_name='event_cover_image_mobile', null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     section = models.ManyToManyField(Content, blank=True)
 
