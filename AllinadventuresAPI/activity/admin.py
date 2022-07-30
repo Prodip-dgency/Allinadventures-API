@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Gallery, Category, Level, Content, Location, Activity
+from .models import Gallery, Category, Level, Content, Location, Activity, Event, VirtualActivity, Review
 
 # Register your models here.
 
-admin.site.register([Activity, Location, Level, Category, Gallery, Content])
+admin.site.register([Activity, Location, Level, Category, Gallery, Content, Event, VirtualActivity, Review])
 
 class ActivityAdminArea(admin.AdminSite):
     site_header = "Activity Database"
