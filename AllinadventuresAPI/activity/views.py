@@ -7,8 +7,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
 
-from .models import Location, Category, Gallery, Activity, Content
-from .serializers import LocationModelSerializer, CategoryModelSerializer, GalleryModelSerializer, ActivityModelSerializer, ContentModelSerializer
+from .models import Location, Category, Gallery, Activity, Content, Event, VirtualActivity, Review
+from .serializers import (LocationModelSerializer, CategoryModelSerializer, 
+                          GalleryModelSerializer, ActivityModelSerializer, 
+                          ContentModelSerializer, EventModelSerializer, 
+                          VirtualActivityModelSerializer, ReviewModelSerializer)
 
 
 # Class Based views for all the data tables - Standard
@@ -68,13 +71,22 @@ def homepageview(request):
     other_physical_games = ActivityModelSerializer(other_physical_games, many=True)
     other_physical_games = other_physical_games.data
 
+
     #virtual escape room -----> Coming Soon
 
-    events = 0
+    events = Event.objects.all()
+    events = EventModelSerializer(events, many=True)
+    events = events.data
 
-    virtualgames = 0
+    #virtual escape room -----> Coming Soon
 
-    allreviews = 0
+    virtualgames = VirtualActivity.objects.all()
+    virtualgames = VirtualActivityModelSerializer(virtualgames, many=True)
+    virtualgames = virtualgames.data
+
+    allreviews = Review.objects.all()
+    allreviews = ReviewModelSerializer(allreviews, many=True)
+    allreviews = allreviews.data
 
 
 
