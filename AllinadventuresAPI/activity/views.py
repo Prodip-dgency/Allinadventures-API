@@ -38,6 +38,18 @@ class ContentModelView(viewsets.ModelViewSet):
     serializer_class = ContentModelSerializer
     queryset = Content.objects.all()
 
+class EventModelView(viewsets.ModelViewSet):
+    serializer_class = EventModelSerializer
+    queryset = Event.objects.all()
+
+class VirtualActivityModelView(viewsets.ModelViewSet):
+    serializer_class = VirtualActivityModelSerializer
+    queryset = VirtualActivity.objects.all()
+
+class ReviewModelView(viewsets.ModelViewSet):
+    serializer_class = ReviewModelSerializer
+    queryset = Review.objects.all()
+
 
 #function based api for every pages differntly - Not Stadard
 
@@ -123,9 +135,6 @@ def homepageview(request):
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
             serializer = ActivityCustomSerializer(gameobj, context={'request':request})
             inpersongames.append(serializer.data)
-    else:
-        data = {'message': 'No game available'}
-        inpersongames.append(data)
 
     ############## otherphysicalgames with specified data only##############################
 
@@ -157,9 +166,6 @@ def homepageview(request):
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
             serializer = ActivityCustomSerializer(gameobj, context={'request':request})
             otherphysicalgames.append(serializer.data)
-    else:
-        data = {'message': 'No game available'}
-        otherphysicalgames.append(data)
 
 
     ################################ Events with specified data only ################################
@@ -213,9 +219,6 @@ def homepageview(request):
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
             serializer = ActivityCustomSerializer(gameobj)
             virtualgames.append(serializer.data)
-    else:
-        data = {'message': 'No game available'}
-        virtualgames.append(data)
 
 
     ################################## Reviews ############################################
@@ -238,9 +241,6 @@ def homepageview(request):
             reviewobj = ReviewCustomClass(id, title, review_text, review_author, author_location)
             serializer = ReviewCustomSerializer(reviewobj)
             reviews.append(serializer.data)
-    else:
-        data = {'message': 'No review yet'}
-        reviews.append(data)
 
 
     all_response = {
