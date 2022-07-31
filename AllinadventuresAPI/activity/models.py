@@ -92,6 +92,11 @@ class Activity(models.Model):
 
     class Meta:
         verbose_name_plural = ("Activities")
+        ordering = ('location', 'category')
+
+    
+    def titleLength(obj):
+        return len(obj.title)
 
     def __str__(self):
         return self.title

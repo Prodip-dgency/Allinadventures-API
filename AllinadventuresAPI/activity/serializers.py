@@ -60,7 +60,6 @@ class ReviewModelSerializer(serializers.ModelSerializer):
 
 
 ############################ Below is the custom serializers #####################################
-
 class ActivityCustomSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     type = serializers.CharField()
@@ -88,22 +87,3 @@ class ReviewCustomSerializer(serializers.Serializer):
     review_text = serializers.CharField()
     review_author = serializers.CharField()
     author_location = serializers.CharField()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
