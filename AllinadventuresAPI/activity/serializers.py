@@ -57,7 +57,6 @@ class ReviewModelSerializer(serializers.ModelSerializer):
 ############################ Below is the custom serializers #####################################
 
 class ActivityCustomSerializer(serializers.Serializer):
-
     id = serializers.IntegerField()
     type = serializers.CharField()
     title = serializers.CharField()
@@ -77,6 +76,13 @@ class EventCustomSerializer(serializers.Serializer):
     slug = serializers.CharField()
     bg_img = serializers.ImageField()
 
+
+class ReviewCustomSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField()
+    review_text = serializers.CharField()
+    review_author = serializers.CharField()
+    author_location = serializers.CharField()
 
 
 

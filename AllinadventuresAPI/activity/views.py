@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import get_object_or_404, render
 
 from rest_framework import viewsets
@@ -11,7 +12,8 @@ from .serializers import (LocationModelSerializer, CategoryModelSerializer,
                           GalleryModelSerializer, ActivityModelSerializer, 
                           ContentModelSerializer, EventModelSerializer, 
                           VirtualActivityModelSerializer, ReviewModelSerializer,
-                          ActivityCustomSerializer, EventCustomSerializer)
+                          ActivityCustomSerializer, EventCustomSerializer,
+                          ReviewCustomSerializer)
 
 
 # Class Based views for all the data tables - Standard
@@ -81,6 +83,15 @@ def homepageview(request):
             self.slug = slug
             self.bg_img = bg_img
 
+    
+    class ReviewCustomClass:
+        def __init__(self, id, title, review_text, review_author, author_location):
+            self.id = id
+            self.title = title
+            self.review_text = review_text
+            self.review_author = review_author
+            self.author_location = author_location
+
 
     ############in person game with specified data only#########################
 
@@ -110,7 +121,7 @@ def homepageview(request):
                 bg_img = 'No image uploaded!'
 
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
-            serializer = ActivityCustomSerializer(gameobj)
+            serializer = ActivityCustomSerializer(gameobj, context={'request':request})
             inpersongames.append(serializer.data)
     else:
         data = {'message': 'No game available'}
@@ -144,7 +155,7 @@ def homepageview(request):
                 bg_img = 'No image is uploaded'
 
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
-            serializer = ActivityCustomSerializer(gameobj)
+            serializer = ActivityCustomSerializer(gameobj, context={'request':request})
             otherphysicalgames.append(serializer.data)
     else:
         data = {'message': 'No game available'}
@@ -169,49 +180,67 @@ def homepageview(request):
                 bg_img = 'No image is uploaded'
 
             eventobj = EventCustomClass(id, title, description, slug, bg_img)
-            serializer = EventCustomSerializer(eventobj)
+            serializer = EventCustomSerializer(eventobj, context={"request":request})
             events.append(serializer.data)
 
 
+    
+    ############################Virtual Games##########################################
+    all_virtualgames = VirtualActivity.objects.all()
+    virtualgames = []
+
+    if all_virtualgames:
+        for game in all_virtualgames:
+            id = game.id
+            title = game.title
+            description = game.description
+            age = game.required_age
+            duration = game.duration
+            players = "{minimum_participant}-{maximum_participant}".format(minimum_participant=game.minimum_participant, maximum_participant=game.maximum_participant)
+            price = game.price
+            slug = game.slug
+
+            if game.category:
+                type = game.category.title
+            else:
+                type = 'No type defined'
+            
+            if game.cover_image:
+                bg_img = game.cover_image.image
+            else:
+                bg_img = 'No image is uploaded'
+
+            gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
+            serializer = ActivityCustomSerializer(gameobj)
+            virtualgames.append(serializer.data)
+    else:
+        data = {'message': 'No game available'}
+        virtualgames.append(data)
 
 
+    ################################## Reviews ############################################
 
+    all_reviews = Review.objects.all()
+    reviews = []
 
+    if all_reviews:
+        for review in all_reviews:
+            id = review.id
+            title = review.title
+            review_text = review.description
+            review_author = review.player_name
 
-
-
-    # #in person game
-    # inperson_category = get_object_or_404(Category, title='Escape Room') # Needs unique title or create slug
-    # in_person_games = Activity.objects.all().filter(category = inperson_category)
-    # in_person_games = ActivityModelSerializer(in_person_games, many=True)
-    # in_person_games = in_person_games.data
-
-
-    #above code block needs some safety
-
-    #other physical games
-    # otherphysicalgames_category = get_object_or_404(Category, title='Other Physical Game')
-    # other_physical_games = Activity.objects.all().filter(category=otherphysicalgames_category)
-    # other_physical_games = ActivityModelSerializer(other_physical_games, many=True)
-    # other_physical_games = other_physical_games.data
-
-
-    #Events 
-
-    # events = Event.objects.all()
-    # events = EventModelSerializer(events, many=True)
-    # events = events.data
-
-    #virtual escape room -----> Coming Soon
-
-    virtualgames = VirtualActivity.objects.all()
-    virtualgames = VirtualActivityModelSerializer(virtualgames, many=True)
-    virtualgames = virtualgames.data
-
-    allreviews = Review.objects.all()
-    allreviews = ReviewModelSerializer(allreviews, many=True)
-    allreviews = allreviews.data
-
+            if review.location:
+                author_location = review.location.title
+            else:
+                author_location = 'No location specified'
+            
+            reviewobj = ReviewCustomClass(id, title, review_text, review_author, author_location)
+            serializer = ReviewCustomSerializer(reviewobj)
+            reviews.append(serializer.data)
+    else:
+        data = {'message': 'No review yet'}
+        reviews.append(data)
 
 
     all_response = {
@@ -219,10 +248,8 @@ def homepageview(request):
         'inpersongames': inpersongames,
         'otherphysicalgames': otherphysicalgames,
         'events': events,
-        # 'in_person_games': in_person_games,
-        # 'otherphysicalgames': other_physical_games,
         'virtualgames': virtualgames,
-        'allreviews': allreviews,
+        'allreviews': reviews,
     }
 
     return Response(all_response)
