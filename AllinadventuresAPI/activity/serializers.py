@@ -9,16 +9,19 @@ class LocationModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = "__all__"
+        depth = 2
 
 class CategoryModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
+        depth = 2
 
 class GalleryModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gallery
         fields = "__all__"
+        depth = 2
         
 class CategoryModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,15 +50,16 @@ class VirtualActivityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = VirtualActivity
         fields = "__all__"
+        depth = 2
 
 class ReviewModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = "__all__"
+        depth = 2
 
 
 ############################ Below is the custom serializers #####################################
-
 class ActivityCustomSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     type = serializers.CharField()
@@ -83,22 +87,3 @@ class ReviewCustomSerializer(serializers.Serializer):
     review_text = serializers.CharField()
     review_author = serializers.CharField()
     author_location = serializers.CharField()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
