@@ -8,46 +8,48 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
 
 from .models import Location, Category, Gallery, Activity, Content, Event, VirtualActivity, Review
-from .serializers import (LocationModelSerializer, CategoryModelSerializer, 
-                          GalleryModelSerializer, ActivityModelSerializer, 
-                          ContentModelSerializer, EventModelSerializer, 
-                          VirtualActivityModelSerializer, ReviewModelSerializer,
-                          ActivityCustomSerializer, EventCustomSerializer,
-                          ReviewCustomSerializer)
+# from .serializers import (LocationModelSerializer, CategoryModelSerializer, 
+#                           GalleryModelSerializer, ActivityModelSerializer, 
+#                           ContentModelSerializer, EventModelSerializer, 
+#                           VirtualActivityModelSerializer, ReviewModelSerializer,
+#                           ActivityCustomSerializer, EventCustomSerializer,
+#                           ReviewCustomSerializer)
+
+from . import serializers
 
 
 # Class Based views for all the data tables - Standard
 
 class LocationModelView(viewsets.ModelViewSet):
-    serializer_class = LocationModelSerializer
+    serializer_class = serializers.LocationModelSerializer
     queryset = Location.objects.all()
 
 class CategoryModelView(viewsets.ModelViewSet):
-    serializer_class = CategoryModelSerializer
+    serializer_class = serializers.CategoryModelSerializer
     queryset = Category.objects.all()
 
 class GalleryModelView(viewsets.ModelViewSet):
-    serializer_class = GalleryModelSerializer
+    serializer_class = serializers.GalleryModelSerializer
     queryset = Gallery.objects.all()
 
 class ActivityModelView(viewsets.ModelViewSet):
-    serializer_class = ActivityModelSerializer
+    serializer_class = serializers.ActivityModelSerializer
     queryset = Activity.objects.all()
 
 class ContentModelView(viewsets.ModelViewSet):
-    serializer_class = ContentModelSerializer
+    serializer_class = serializers.ContentModelSerializer
     queryset = Content.objects.all()
 
 class EventModelView(viewsets.ModelViewSet):
-    serializer_class = EventModelSerializer
+    serializer_class = serializers.EventModelSerializer
     queryset = Event.objects.all()
 
 class VirtualActivityModelView(viewsets.ModelViewSet):
-    serializer_class = VirtualActivityModelSerializer
+    serializer_class = serializers.VirtualActivityModelSerializer
     queryset = VirtualActivity.objects.all()
 
 class ReviewModelView(viewsets.ModelViewSet):
-    serializer_class = ReviewModelSerializer
+    serializer_class = serializers.ReviewModelSerializer
     queryset = Review.objects.all()
 
 
@@ -133,7 +135,7 @@ def homepageview(request):
                 bg_img = 'No image uploaded!'
 
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
-            serializer = ActivityCustomSerializer(gameobj, context={'request':request})
+            serializer = serializers.ActivityCustomSerializer(gameobj, context={'request':request})
             inpersongames.append(serializer.data)
 
     ############## otherphysicalgames with specified data only##############################
@@ -164,7 +166,7 @@ def homepageview(request):
                 bg_img = 'No image is uploaded'
 
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
-            serializer = ActivityCustomSerializer(gameobj, context={'request':request})
+            serializer = serializers.ActivityCustomSerializer(gameobj, context={'request':request})
             otherphysicalgames.append(serializer.data)
 
 
@@ -186,7 +188,7 @@ def homepageview(request):
                 bg_img = 'No image is uploaded'
 
             eventobj = EventCustomClass(id, title, description, slug, bg_img)
-            serializer = EventCustomSerializer(eventobj, context={"request":request})
+            serializer = serializers.EventCustomSerializer(eventobj, context={"request":request})
             events.append(serializer.data)
 
 
@@ -217,7 +219,7 @@ def homepageview(request):
                 bg_img = 'No image is uploaded'
 
             gameobj = ActivityCustomClass(id, type, title, description, age, duration, players, price, slug, bg_img)
-            serializer = ActivityCustomSerializer(gameobj)
+            serializer = serializers.ActivityCustomSerializer(gameobj)
             virtualgames.append(serializer.data)
 
 
@@ -239,7 +241,7 @@ def homepageview(request):
                 author_location = 'No location specified'
             
             reviewobj = ReviewCustomClass(id, title, review_text, review_author, author_location)
-            serializer = ReviewCustomSerializer(reviewobj)
+            serializer = serializers.ReviewCustomSerializer(reviewobj)
             reviews.append(serializer.data)
 
 
@@ -253,3 +255,42 @@ def homepageview(request):
     }
 
     return Response(all_response)
+
+
+
+################################### All location page apis (non standard) ##################################
+@api_view()
+def allLocationView(request):
+
+    class LocationCustomClass:
+        def __init__(self, id, slug, city, state, shortaddress):
+            self.id = id
+            self.slug = slug
+            self.city = city
+            self.state = state
+            self.shortaddress = shortaddress
+
+    all_locations = Location.objects.all()
+    locations = []
+
+    if all_locations:
+        for location in all_locations:
+            id = location.id
+            slug = location.slug
+            city = location.city
+            state = location.state
+            shortaddress = location.title
+
+            locationobj = LocationCustomClass(id, slug, city, state, shortaddress)
+            serializer = serializers.LocationCustomSerializer(locationobj)
+            locations.append(serializer.data)
+
+    return Response(locations)
+
+
+################################# Location detail page apis (non standard) ##########################################
+
+
+
+
+

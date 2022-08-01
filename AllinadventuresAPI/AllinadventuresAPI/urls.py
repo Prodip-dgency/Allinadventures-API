@@ -19,10 +19,23 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import settings
 
+from activity import views
+
 # from activity.admin import activity_site
 
 urlpatterns = [
     path('activity/', include('activity.urls')),
     path('admin/', admin.site.urls),
     # path('activityadmin/', activity_site.urls)
+
+
+    path('api/homepageview/', views.homepageview, name='homepageview'),
+    path('api/all-locations/', views.allLocationView, name='all-locations'),
+
+
+
+
+
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

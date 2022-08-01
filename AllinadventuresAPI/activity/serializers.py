@@ -59,7 +59,7 @@ class ReviewModelSerializer(serializers.ModelSerializer):
         depth = 2
 
 
-############################ Below is the custom serializers #####################################
+############################ Below is the custom serializers for homepageview #####################################
 class ActivityCustomSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     type = serializers.CharField()
@@ -87,3 +87,12 @@ class ReviewCustomSerializer(serializers.Serializer):
     review_text = serializers.CharField()
     review_author = serializers.CharField()
     author_location = serializers.CharField()
+
+############################ Below is the custom serializer for all locations view ##############################################
+class LocationCustomSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    slug = serializers.SlugField()
+    city = serializers.CharField()
+    state = serializers.CharField()
+    shortaddress = serializers.CharField() 
+
