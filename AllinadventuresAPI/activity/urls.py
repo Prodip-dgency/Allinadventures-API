@@ -15,6 +15,4 @@ router.register('review', views.ReviewModelView, basename='review')
 
 urlpatterns = [
     path('viewset/', include(router.urls)),
-    path('homepageview/', views.homepageview, name='homepageview'),
-    path('api/all-locations/', views.allLocationView, name='all-locations'),
 ]
