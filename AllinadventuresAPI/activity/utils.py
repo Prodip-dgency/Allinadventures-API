@@ -21,3 +21,7 @@ def unique_slug_generator(instance, new_slug=None):
 def pre_save_signal_reciever(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
+
+
+def get_absolute_image_path(request, image_path):
+    return "http://{domain}/media/{image_path}".format(domain=request.META['HTTP_HOST'], image_path=image_path)
