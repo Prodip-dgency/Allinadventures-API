@@ -1,5 +1,6 @@
 from multiprocessing import context
-from django.shortcuts import get_object_or_404, render
+from typing import Type
+from django.shortcuts import get_object_or_404, render, HttpResponse
 
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -290,7 +291,29 @@ def allLocationView(request):
 
 ################################# Location detail page apis (non standard) ##########################################
 
+@api_view()
+def location_details_page_view(request, slug):
 
+    location = get_object_or_404(Location, slug=slug)
 
+    totalLocations = len(Location.objects.all())
 
+    totalUniqueGames = len(Activity.objects.all().filter(location=location))
 
+    pagedata = {
+        'locationstate': location.state,
+        'locationcity': location.city,
+        'totalLocations': totalLocations,
+        'locationaddress': location.address,
+        'totalUniqueGames': totalUniqueGames,
+        'totalFiveStarReview': "60k+",
+        'totalPlayerEscaped': "90k+",
+        'coverimageL': location.cover_image.image.url,
+        'coverimageM': location.cover_image_mobile.image.url
+    }
+
+    all_response = {
+        'pagedata': pagedata,
+    }
+
+    return Response(all_response)

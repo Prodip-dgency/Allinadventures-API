@@ -94,5 +94,7 @@ class LocationCustomSerializer(serializers.Serializer):
     slug = serializers.SlugField()
     city = serializers.CharField()
     state = serializers.CharField()
-    shortaddress = serializers.CharField() 
+    shortaddress = serializers.CharField()
+
+
 
