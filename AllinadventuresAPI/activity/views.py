@@ -17,7 +17,7 @@ from .models import Location, Category, Gallery, Activity, Content, Event, Virtu
 #                           ReviewCustomSerializer)
 
 from . import serializers
-
+from .utils import get_absolute_image_path
 
 # Class Based views for all the data tables - Standard
 
@@ -295,22 +295,44 @@ def allLocationView(request):
 def location_details_page_view(request, slug):
 
     location = get_object_or_404(Location, slug=slug)
+    locations = Location.objects.all()
+    activities  = Activity.objects.filter(location=location)
 
-    totalLocations = len(Location.objects.all())
-
-    totalUniqueGames = len(Activity.objects.all().filter(location=location))
+    locationstate = location.state
+    locationcity = location.city
+    totalLocations = len(locations)
+    locationaddress = location.address
+    totalUniqueGames = len(activities)
+    totalFiveStarReview = "60k+"
+    totalPlayerEscaped = "90K+"
+    coverimageL = None
+    if location.cover_image:
+        image_path = location.cover_image.image
+        coverimageL = get_absolute_image_path(request, image_path)
+    coverimageM = None
+    if location.cover_image_mobile:
+        image_path = location.cover_image_mobile.image
+        coverimageM = get_absolute_image_path(request, image_path)
 
     pagedata = {
-        'locationstate': location.state,
-        'locationcity': location.city,
+        'locationstate': locationstate,
+        'locationcity': locationcity,
         'totalLocations': totalLocations,
-        'locationaddress': location.address,
+        'locationaddress': locationaddress,
         'totalUniqueGames': totalUniqueGames,
-        'totalFiveStarReview': "60k+",
-        'totalPlayerEscaped': "90k+",
-        'coverimageL': location.cover_image.image.url,
-        'coverimageM': location.cover_image_mobile.image.url
+        'totalFiveStarReview': totalFiveStarReview,
+        'totalPlayerEscaped': totalPlayerEscaped,
+        'coverimageL': coverimageL,
+        'coverimageM': coverimageM
     }
+
+    
+    inpersongames = []
+    if activities:
+        for activity in activities:
+            pass
+
+
 
     all_response = {
         'pagedata': pagedata,
