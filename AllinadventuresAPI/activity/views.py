@@ -330,12 +330,53 @@ def location_details_page_view(request, slug):
     inpersongames = []
     if activities:
         for activity in activities:
-            pass
+            activity_id = activity.id
+            if activity.category:
+                activity_category = activity.category.title
+            else:
+                activity_category = None
+            activity_title = activity.title
+            activity_description = activity.description
+            activity_age = activity.required_age
+            activity_duration = activity.duration
+            activity_maxplayers = activity.maximum_participant
+            activity_minplayers = activity.minimum_participant
+            activity_price = activity.price
+            activity_slug = activity.slug
+            if activity.cover_image:
+                image_path = activity.cover_image.image
+                activity_bgimg = get_absolute_image_path(request, image_path)
+            else:
+                activity_bgimg = None
 
+            activity_details = {
+                'id': activity_id,
+                'category': activity_category,
+                'title': activity_title,
+                'description': activity_description,
+                'age': activity_age,
+                'duration': activity_duration,
+                'maxplayers': activity_maxplayers,
+                'minplayers': activity_minplayers,
+                'price': activity_price,
+                'slug': activity_slug,
+                'bg_img': activity_bgimg
+            }
+            inpersongames.append(activity_details)
+
+    otherphysicalgames = []
+    events = []
+    virtualgames = []
+    locationreviews =[]
 
 
     all_response = {
         'pagedata': pagedata,
+        'inpersongames': inpersongames,
+        'otherphysicalgames': otherphysicalgames,
+        'events': events,
+        'virtualgames': virtualgames,
+        'locationreviews': locationreviews,
     }
 
     return Response(all_response)
