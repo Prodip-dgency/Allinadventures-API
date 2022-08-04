@@ -103,7 +103,6 @@ class Activity(models.Model):
 
 pre_save.connect(pre_save_signal_reciever, sender=Activity)
 
-
 class Event(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=1000, null=True, blank=True)
