@@ -297,6 +297,18 @@ def location_details_page_view(request, slug):
     location = get_object_or_404(Location, slug=slug)
     locations = Location.objects.all()
     activities  = Activity.objects.filter(location=location)
+    escaperooms = []
+    other_activites = []
+    if activities:
+        for activity in activities:
+            if activity.category:
+                if activity.category.title == 'Escape Room':
+                    escaperooms.append(activity)
+                elif activity.category.title == 'Other Physical Game':
+                    other_activites.append(activity)
+
+    
+    
 
     locationstate = location.state
     locationcity = location.city
@@ -328,43 +340,80 @@ def location_details_page_view(request, slug):
 
     
     inpersongames = []
-    if activities:
-        for activity in activities:
-            activity_id = activity.id
-            if activity.category:
-                activity_category = activity.category.title
+    if escaperooms:
+        for escaperoom in escaperooms:
+            escaperoom_id = escaperoom.id
+            if escaperoom.category:
+                escaperoom_category = escaperoom.category.title
             else:
-                activity_category = None
-            activity_title = activity.title
-            activity_description = activity.description
-            activity_age = activity.required_age
-            activity_duration = activity.duration
-            activity_maxplayers = activity.maximum_participant
-            activity_minplayers = activity.minimum_participant
-            activity_price = activity.price
-            activity_slug = activity.slug
-            if activity.cover_image:
-                image_path = activity.cover_image.image
-                activity_bgimg = get_absolute_image_path(request, image_path)
+                escaperoom_category = None
+            escaperoom_title = escaperoom.title
+            escaperoom_description = escaperoom.description
+            escaperoom_age = escaperoom.required_age
+            escaperoom_duration = escaperoom.duration
+            escaperoom_maxplayers = escaperoom.maximum_participant
+            escaperoom_minplayers = escaperoom.minimum_participant
+            escaperoom_price = escaperoom.price
+            escaperoom_slug = escaperoom.slug
+            if escaperoom.cover_image:
+                image_path = escaperoom.cover_image.image
+                escaperoom_bgimg = get_absolute_image_path(request, image_path)
             else:
-                activity_bgimg = None
+                escaperoom_bgimg = None
 
-            activity_details = {
-                'id': activity_id,
-                'category': activity_category,
-                'title': activity_title,
-                'description': activity_description,
-                'age': activity_age,
-                'duration': activity_duration,
-                'maxplayers': activity_maxplayers,
-                'minplayers': activity_minplayers,
-                'price': activity_price,
-                'slug': activity_slug,
-                'bg_img': activity_bgimg
+            escaperoom_details = {
+                'id': escaperoom_id,
+                'category': escaperoom_category,
+                'title': escaperoom_title,
+                'description': escaperoom_description,
+                'age': escaperoom_age,
+                'duration': escaperoom_duration,
+                'maxplayers': escaperoom_maxplayers,
+                'minplayers': escaperoom_minplayers,
+                'price': escaperoom_price,
+                'slug': escaperoom_slug,
+                'bg_img': escaperoom_bgimg
             }
-            inpersongames.append(activity_details)
+            inpersongames.append(escaperoom_details)
 
     otherphysicalgames = []
+    if other_activites:
+        for other_activity in other_activites:
+            other_activity_id = other_activity.id
+            if other_activity.category:
+                other_activity_category = other_activity.category.title
+            else:
+                other_activity_category = None
+            other_activity_title = other_activity.title
+            other_activity_description = other_activity.description
+            other_activity_age = other_activity.required_age
+            other_activity_duration = other_activity.duration
+            other_activity_maxplayers = other_activity.maximum_participant
+            other_activity_minplayers = other_activity.minimum_participant
+            other_activity_price = other_activity.price
+            other_activity_slug = other_activity.slug
+            if other_activity.cover_image:
+                other_activity_bgimg_path = other_activity.cover_image.image
+                other_activity_bgimg = get_absolute_image_path(request, other_activity_bgimg_path)
+            else:
+                other_activity_bgimg = None
+            
+            other_activity_detials = {
+                'id': other_activity_id,
+                'category': other_activity_category,
+                'title': other_activity_title,
+                'description': other_activity_description,
+                'age': other_activity_age,
+                'duration': other_activity_duration,
+                'maxplayers': other_activity_maxplayers,
+                'minplayers': other_activity_minplayers,
+                'price': other_activity_price,
+                'slug': other_activity_slug,
+                'bgimg': other_activity_bgimg
+            }
+            otherphysicalgames.append(other_activity_detials)
+
+
     events = []
     virtualgames = []
     locationreviews =[]
