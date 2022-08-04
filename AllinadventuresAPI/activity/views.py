@@ -297,6 +297,7 @@ def location_details_page_view(request, slug):
     location = get_object_or_404(Location, slug=slug)
     locations = Location.objects.all()
     activities  = Activity.objects.filter(location=location)
+    all_events = Event.objects.filter(location=location)
     escaperooms = []
     other_activites = []
     if activities:
@@ -306,10 +307,7 @@ def location_details_page_view(request, slug):
                     escaperooms.append(activity)
                 elif activity.category.title == 'Other Physical Game':
                     other_activites.append(activity)
-
     
-    
-
     locationstate = location.state
     locationcity = location.city
     totalLocations = len(locations)
@@ -413,8 +411,28 @@ def location_details_page_view(request, slug):
             }
             otherphysicalgames.append(other_activity_detials)
 
-
     events = []
+    if all_events:
+        for event in all_events:
+            event_id = event.id
+            event_title = event.title
+            event_description = event.description
+            event_slug = event.slug
+            if event.cover_image:
+                event_bgimg_path = event.cover_image.image
+                event_bgimg = get_absolute_image_path(request, event_bgimg_path)
+            else:
+                event_bgimg = None
+
+            event_details = {
+                'id': event_id,
+                'title': event_title,
+                'description': event_description,
+                'slug': event_slug,
+                'bgimg': event_bgimg
+            }
+            events.append(event_details)
+
     virtualgames = []
     locationreviews =[]
 
