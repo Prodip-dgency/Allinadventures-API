@@ -1,5 +1,3 @@
-from multiprocessing import context
-from typing import Type
 from django.shortcuts import get_object_or_404, render, HttpResponse
 
 from rest_framework import viewsets
@@ -298,6 +296,7 @@ def location_details_page_view(request, slug):
     locations = Location.objects.all()
     activities  = Activity.objects.filter(location=location)
     all_events = Event.objects.filter(location=location)
+    all_virtual_activities = VirtualActivity.objects.all()
     escaperooms = []
     other_activites = []
     if activities:
@@ -434,6 +433,41 @@ def location_details_page_view(request, slug):
             events.append(event_details)
 
     virtualgames = []
+    if all_virtual_activities:
+        for virtual_activity in all_virtual_activities:
+            # 'va' -> virtual activity
+            va_id = virtual_activity.id
+            if virtual_activity.category:
+                va_category = virtual_activity.category.title
+            va_title = virtual_activity.title
+            va_description = virtual_activity.description
+            va_age = virtual_activity.required_age
+            va_duration = virtual_activity.duration
+            va_maxplayers = virtual_activity.maximum_participant
+            va_minplayers = virtual_activity.minimum_participant
+            va_price = virtual_activity.price
+            va_slug = virtual_activity.slug
+            if virtual_activity.cover_image:
+                va_bgimg_path = virtual_activity.cover_image.image
+                va_bgimg = get_absolute_image_path(request, va_bgimg_path)
+            else:
+                va_bgimg = None
+            
+            va_details = {
+                'id': va_id,
+                'category': va_category,
+                'title': va_title,
+                'description': va_description,
+                'age': va_age,
+                'duration': va_duration,
+                'maxplayers': va_maxplayers,
+                'price': va_minplayers,
+                'slug': va_slug,
+                'bgimg': va_bgimg,
+            }
+            virtualgames.append(va_details)
+
+
     locationreviews =[]
 
 
