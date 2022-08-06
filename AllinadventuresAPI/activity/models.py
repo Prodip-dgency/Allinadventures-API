@@ -146,9 +146,19 @@ class VirtualActivity(models.Model):
 
 
 class Review(models.Model):
+
+    STARS = [
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
+    ]
+
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=1000, null=True, blank=True)
     player_name = models.CharField(max_length=200, blank=True, null=True)
+    rating = models.CharField(max_length=2, choices=STARS, default='5')
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     main_image = models.ForeignKey(Gallery, on_delete=models.SET_NULL, null=True, blank=True)
 

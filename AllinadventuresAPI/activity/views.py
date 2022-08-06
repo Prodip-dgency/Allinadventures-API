@@ -297,6 +297,7 @@ def location_details_page_view(request, slug):
     activities  = Activity.objects.filter(location=location)
     all_events = Event.objects.filter(location=location)
     all_virtual_activities = VirtualActivity.objects.all()
+    all_reviews = Review.objects.filter(location=location)
     escaperooms = []
     other_activites = []
     if activities:
@@ -469,7 +470,29 @@ def location_details_page_view(request, slug):
 
 
     locationreviews =[]
-
+    if all_reviews:
+        for review in all_reviews:
+            review_id = review.id
+            review_star = review.rating # !----------- Problem ----------------! #
+            review_tilte = review.title
+            review_text = review.description
+            review_author = review.player_name
+            if review.location:
+                review_author_location = review.location.title
+            if review.main_image:
+                review_image_path = review.main_image.image
+                review_image = get_absolute_image_path(request, review_image_path)
+            
+            review_details = {
+                'id': review_id,
+                'star': review_star,
+                'tilte': review_tilte,
+                'review_text': review_text,
+                'author': review_author,
+                'author_location': review_author_location,
+                'rev_img': review_image 
+            }
+            locationreviews.append(review_details)
 
     all_response = {
         'pagedata': pagedata,
