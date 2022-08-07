@@ -1,13 +1,7 @@
 from django.db import models
-
 from django.db.models.signals import pre_save
 
 from .utils import pre_save_signal_reciever
-
-
-
-# Create your models here.
-
 
 ##################### No Dependacny models ###################################
 
@@ -120,7 +114,6 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
-
 class VirtualActivity(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=1000, null=True, blank=True)
@@ -164,5 +157,3 @@ class Review(models.Model):
 
     def __str__(self):
         return self.title
-
-
