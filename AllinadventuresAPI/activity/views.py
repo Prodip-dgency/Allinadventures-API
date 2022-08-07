@@ -1,18 +1,10 @@
-from django.shortcuts import get_object_or_404, render, HttpResponse
+from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer
+from rest_framework.decorators import api_view
 
 from .models import Location, Category, Gallery, Activity, Content, Event, VirtualActivity, Review
-# from .serializers import (LocationModelSerializer, CategoryModelSerializer, 
-#                           GalleryModelSerializer, ActivityModelSerializer, 
-#                           ContentModelSerializer, EventModelSerializer, 
-#                           VirtualActivityModelSerializer, ReviewModelSerializer,
-#                           ActivityCustomSerializer, EventCustomSerializer,
-#                           ReviewCustomSerializer)
 
 from . import serializers
 from .utils import get_absolute_image_path
@@ -65,11 +57,15 @@ def homepageview(request):
     game = Activity.objects.all()
     totalUniqueGames = len(game)
 
+    #5 star reviews
+    five_star_reviews = Review.objects.filter(rating = '5')
+    five_star_reviews_count = len(five_star_reviews)
+
     #homeagedata
     homeagedata = {
         'totalLocations': totalLocations,
         'totalUniqueGames': totalUniqueGames,
-        'totalFiveStarReview': '98k+',
+        'totalFiveStarReview': five_star_reviews_count,
         'totalPlayerEscaped': '90k+'
     }
 
@@ -298,6 +294,11 @@ def location_details_page_view(request, slug):
     all_events = Event.objects.filter(location=location)
     all_virtual_activities = VirtualActivity.objects.all()
     all_reviews = Review.objects.filter(location=location)
+    five_star_reviews = []
+    if all_reviews:
+        for review in all_reviews:
+            if review.rating == '5':
+                five_star_reviews.append(review)
     escaperooms = []
     other_activites = []
     if activities:
@@ -313,7 +314,7 @@ def location_details_page_view(request, slug):
     totalLocations = len(locations)
     locationaddress = location.address
     totalUniqueGames = len(activities)
-    totalFiveStarReview = "60k+"
+    totalFiveStarReview = len(five_star_reviews)
     totalPlayerEscaped = "90K+"
     coverimageL = None
     if location.cover_image:
@@ -473,7 +474,7 @@ def location_details_page_view(request, slug):
     if all_reviews:
         for review in all_reviews:
             review_id = review.id
-            review_star = review.rating # !----------- Problem ----------------! #
+            review_star = review.rating
             review_tilte = review.title
             review_text = review.description
             review_author = review.player_name
