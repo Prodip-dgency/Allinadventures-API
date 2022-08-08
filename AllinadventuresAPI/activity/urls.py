@@ -12,6 +12,7 @@ router.register('content', views.ContentModelView, basename='content')
 router.register('event', views.EventModelView, basename='event')
 router.register('virtualactivity', views.VirtualActivityModelView, basename='virtualactivity')
 router.register('review', views.ReviewModelView, basename='review')
+router.register('level', views.LevelModelView, basename='level')
 
 urlpatterns = [
     path('viewset/', include(router.urls)),

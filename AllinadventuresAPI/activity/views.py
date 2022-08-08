@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .models import Location, Category, Gallery, Activity, Content, Event, VirtualActivity, Review
+from .models import Level, Location, Category, Gallery, Activity, Content, Event, VirtualActivity, Review
 
 from . import serializers
 from .utils import get_absolute_image_path
@@ -42,6 +42,10 @@ class VirtualActivityModelView(viewsets.ModelViewSet):
 class ReviewModelView(viewsets.ModelViewSet):
     serializer_class = serializers.ReviewModelSerializer
     queryset = Review.objects.all()
+
+class LevelModelView(viewsets.ModelViewSet):
+    serializer_class = serializers.LevelModelSerializer
+    queryset = Level.objects.all()
 
 
 #function based api for every pages differntly - Not Stadard
