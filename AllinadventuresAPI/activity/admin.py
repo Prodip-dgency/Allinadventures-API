@@ -70,9 +70,9 @@ class ActivityAdmin(admin.ModelAdmin):
         )
     ]
 
-    # formfield_overrides = {
-    #     models.CharField: {'widget': MyWidget}
-    # }
+    formfield_overrides = {
+        models.CharField: {'widget': MyWidget}
+    }
     #  = [, , 'required_age', 'duration', 'minimum_participant', 'maximum_participant', 'price', 'booking_url', 'card_image', 'cover_image', 'cover_image_mobile', 'location', 'level', 'category', 'section']
 
 admin.site.register(Activity, ActivityAdmin)
