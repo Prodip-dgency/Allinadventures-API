@@ -60,14 +60,20 @@ class ActivityAdmin(admin.ModelAdmin):
             'fields':['slug']
             }
         ),
-        ('Specific Information', {
+        ('Specific information', {
             'fields': [
                 'required_age', 
                 'duration',
                 'minimum_participant',
                 'maximum_participant',
             ]}
-        )
+        ),
+        ('Booking related page', {
+            'fields': [
+                'price',
+                'booking_url',
+            ]
+        })
     ]
 
     formfield_overrides = {
