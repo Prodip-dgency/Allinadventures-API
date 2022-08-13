@@ -75,7 +75,8 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
   'http://localhost:8000',
   'http://localhost:3000',
-  'http://localhost:8080'
+  'http://localhost:8080',
+  'http://64.227.14.59'
 )
 
 ROOT_URLCONF = 'AllinadventuresAPI.urls'
